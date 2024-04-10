@@ -1,4 +1,4 @@
-package band.effective.hdl.ui.theme
+package band.effective.hdl.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
