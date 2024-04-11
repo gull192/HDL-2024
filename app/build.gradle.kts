@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -9,12 +11,28 @@ android {
     namespace = "band.effective.hdl"
     compileSdk = 34
 
+    val authClientSecret = gradleLocalProperties(project.rootDir, providers).getProperty("authClientSecret")
+    val authClientId = gradleLocalProperties(project.rootDir, providers).getProperty("authClientId")
+
     defaultConfig {
         applicationId = "band.effective.hdl"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField(
+            "String",
+            "AUTH_REDIRECT_URL",
+            "\"band.effective.hdl.redirect\""
+        )
+        buildConfigField(
+            "String",
+            "AUTH_SERVER_URL",
+            "\"https://leader-id.ru/apps/authorize\""
+        )
+        buildConfigField("String", "AUTH_CLIENT_SECRET", "\"$authClientSecret\"")
+        buildConfigField("String", "AUTH_CLIENT_ID", "\"$authClientId\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -50,6 +68,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    buildFeatures{
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -62,6 +84,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.datastore.core)
+    implementation(libs.androidx.datastore.preferences)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -78,6 +102,7 @@ dependencies {
     implementation(libs.retrofit.moshi)
     implementation(libs.retrofit.client)
     implementation(libs.retrofit.scalars)
+    implementation(libs.okhttp.logging)
 
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
@@ -85,4 +110,11 @@ dependencies {
 
     implementation(libs.google.dagger.hilt)
     ksp(libs.google.dagger.compiler)
+
+    implementation(libs.androidx.navigation)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.retrofit.adapters)
+
+    implementation(libs.google.vebview)
 }

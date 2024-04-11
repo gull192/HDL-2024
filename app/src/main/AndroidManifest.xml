@@ -24,9 +24,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <data android:scheme="band.effective.hdl.redirect" />
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https"
+                    android:host="band.effective.hdl.redirect"/>
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
